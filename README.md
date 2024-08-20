@@ -3,6 +3,13 @@ Drawing Indian Flag using Blot the plotter bot
 
 ### Changelog
 
+#### Session 2:
+
+* Fix Ashoka Chakra Design and add curve to flag
+* Need some more fixes
+
+![New Drawing](image2.png)
+
 #### Session 1:
 
 * Created Static Flag drawing using Blot Js Library
