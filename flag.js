@@ -1,119 +1,117 @@
+/*
+@title: Indian Flag
+@author: Bhoomi Gharat
+@snapshot: main.png
+*/
+
 const width = 125
 const height = 125
 
 setDocDimensions(width, height);
 
 // declaration
-const CENT = width / 2;
-const CurvePos = (n) => 15 + 60 + 20 * n / 3;
+const CENT = width / 2; // horizontal center
+const PoleH = bt.randInRange(60, 100); // pole height ex: 80
+const curveH = bt.randInRange(-2, 2); // min-max curve turn ex: 2
+const CurvePos = (n) => 15 + (PoleH - 20) + 20 * n / 3;
+const ACPos = 15 + (PoleH - 20) + 20 / 3; // ashoka chakra height ex 15 + 60 + 20 / 3
+const BaseW = bt.randInRange(30, 60); // base stand width ex: 30
 
+// creating base, pole of flag
 const pole = new bt.Turtle();
 pole.jump([(width - 2.5) / 2, 15])
   .left(90)
-  .forward(80)
+  .forward(PoleH)
   .right(90)
   .forward(2)
   .right(90)
-  .forward(80)
+  .forward(PoleH)
 
 const base = new bt.Turtle();
-base.jump([(width - 30) / 2, 0])
+base.jump([(width - BaseW) / 2, 0])
   .left(90)
   .forward(5)
   .right(90)
-  .forward(5)
+  .forward(BaseW / 6)
   .left(90)
   .forward(5)
   .right(90)
-  .forward(5)
+  .forward(BaseW / 6)
   .left(90)
   .forward(5)
   .right(90)
-  .forward(10)
+  .forward(BaseW / 3)
 
   .right(90)
   .forward(5)
   .left(90)
-  .forward(5)
+  .forward(BaseW / 6)
   .right(90)
   .forward(5)
   .left(90)
-  .forward(5)
+  .forward(BaseW / 6)
   .right(90)
   .forward(5)
   .left(90)
 
 const dome = new bt.Turtle();
-dome.jump([(width - 0.5) / 2, (15 + 80)])
+dome.jump([(width - 0.5) / 2, (15 + PoleH)])
   .arc(360, 2.5)
 
 drawLines(dome.lines(), { fill: "gold" })
 drawLines(base.lines(), { fill: "silver" })
 drawLines(pole.lines(), { fill: "silver" })
 
+// generate flag band
+const genBand = (n) => bt.join(
+  // left vertcal curve
+  [
+    [CENT + 0.8, CurvePos(n)],
+    [CENT + 0.8, CurvePos(n - 1)]
+  ],
+
+  // top curve
+  bt.catmullRom([
+    [CENT + 0.8, CurvePos(n - 1)],
+    [CENT + 40 / 3, CurvePos(n - 1) + curveH],
+    [CENT + 80 / 3, CurvePos(n - 1) - curveH],
+    [CENT + 40, CurvePos(n - 1)]
+  ]),
+
+  // right vertical curve
+  [
+    [CENT + 40, CurvePos(n - 1)],
+    [CENT + 40, CurvePos(n)]
+  ],
+
+  // bottom curve
+  bt.catmullRom([
+    [CENT + 40, CurvePos(n)],
+    [CENT + 80 / 3, CurvePos(n) - curveH],
+    [CENT + 40 / 3, CurvePos(n) + curveH],
+    [CENT + 0.8, CurvePos(n)]
+  ]),
+);
+
+// first band
+drawLines([genBand(3)], { fill: "orange" });
+// second band
+drawLines([genBand(2)], { fill: "white" });
+// third band
+drawLines([genBand(1)], { fill: "green" });
+
+// Ashoka Chakra
 const ashokaChakra = new bt.Turtle();
 
-ashokaChakra.jump([(CENT + 20), 15 + 60 + 20 / 3 + (20 / 3 - 5) / 2])
+ashokaChakra.jump([(CENT + 20), ACPos + (20 / 3 - 5) / 2])
   .arc(360, 2.5)
 
+// creating spokes (24) of ashoka chakra
 for (let i = 0; i < 24; i++) {
-  ashokaChakra.jump([(CENT + 20), 15 + 60 + 20 / 3 + (20 / 3) / 2])
+  ashokaChakra.jump([(CENT + 20), ACPos + (20 / 3) / 2])
     .forward(2.5)
-    .jump([(CENT + 20), 15 + 60 + 20 / 3 + (20 / 3) / 2])
+    .jump([(CENT + 20), ACPos + (20 / 3) / 2])
     .right(15)
 }
-
-const curve1 = bt.catmullRom([
-  [CENT + 0.8, CurvePos(3)],
-  [CENT + 40 / 3, CurvePos(3) + 2],
-  [CENT + 80 / 3, CurvePos(3) - 2],
-  [CENT + 40, CurvePos(3)]
-])
-const curve2 = bt.catmullRom([
-  [CENT + 0.8, CurvePos(2)],
-  [CENT + 40 / 3, CurvePos(2) + 2],
-  [CENT + 80 / 3, CurvePos(2) - 2],
-  [CENT + 40, CurvePos(2)]
-])
-const curve3 = bt.catmullRom([
-  [CENT + 0.8, CurvePos(1)],
-  [CENT + 40 / 3, CurvePos(1) + 2],
-  [CENT + 80 / 3, CurvePos(1) - 2],
-  [CENT + 40, CurvePos(1)]
-])
-const curve4 = bt.catmullRom([
-  [CENT + 0.8, CurvePos(0)],
-  [CENT + 40 / 3, CurvePos(0) + 2],
-  [CENT + 80 / 3, CurvePos(0) - 2],
-  [CENT + 40, CurvePos(0)]
-])
-
-const S1 = bt.join([
- [CENT + 0.8, CurvePos(2)],
- [CENT + 0.8, CurvePos(3)]
-], curve1, curve2, [
-  [CENT + 40, CurvePos(2)],
-  [CENT + 40, CurvePos(3)]
-]);
-
-const S2 = bt.join([
- [CENT + 0.8, CurvePos(1)],
- [CENT + 0.8, CurvePos(2)]
-], curve2, curve3, [
-  [CENT + 40, CurvePos(1)],
-  [CENT + 40, CurvePos(2)]
-]);
-
-const S3 = bt.join([
- [CENT + 0.8, CurvePos(0)],
- [CENT + 0.8, CurvePos(1)]
-], curve3, curve4, [
-  [CENT + 40, CurvePos(0)],
-  [CENT + 40, CurvePos(1)]
-]);
-
-drawLines([S1], {fill: "orange"});
-drawLines([S2], {fill: "white"});
-drawLines([S3], {fill: "green"});
-
-drawLines(ashokaChakra.lines(), { stroke: "blue" })
+// drawing ashoka chakra
+drawLines(ashokaChakra.lines(), { stroke: "blue" });
