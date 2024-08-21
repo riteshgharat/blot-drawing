@@ -3,6 +3,11 @@ Drawing Indian Flag using Blot the plotter bot
 
 ### Changelog
 
+#### Session 3:
+* Fix flag design and create generative design
+
+![Main Drawing](main.png)
+
 #### Session 2:
 
 * Fix Ashoka Chakra Design and add curve to flag
